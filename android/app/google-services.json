@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "58908793058",
+    "project_id": "marginpoint-app",
+    "storage_bucket": "marginpoint-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:58908793058:android:713d5c63158479e2c1a6bb",
+        "android_client_info": {
+          "package_name": "com.example.marginpoint"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "58908793058-7fad5bho70vfb5kl0151svscjhsuik61.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaPLR8U3viMizv_RYWc2C1duukXscw1o4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "58908793058-7fad5bho70vfb5kl0151svscjhsuik61.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "58908793058-l1hfkq1ij91lmaio5rbu6as7fpbbslp9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.marginpoint"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
