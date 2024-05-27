@@ -32,7 +32,7 @@ class _AdminPageState extends State<AdminPage> {
           children: [
             Column(
               children: [
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ColoredListTile(
                   title: 'Products',
                   onTap: () {

@@ -10,7 +10,7 @@ class ProductPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         foregroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text('Product List'),
+        title: const Text('Product List'),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -22,7 +22,7 @@ class ProductPage extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => AddProductForm()),
+                MaterialPageRoute(builder: (context) => const AddProductForm()),
               );
             },
             child: SizedBox(
@@ -39,14 +39,14 @@ class ProductPage extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Expanded(
             child: Container(
               color: Colors.grey[200],
               child: Scrollbar(
                 child: Center(
                   child: ListView(
-                    children: [
+                    children: const [
                       // Placeholder for product list
                       // Replace this with your actual product list
                       ListTile(

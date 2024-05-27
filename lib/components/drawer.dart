@@ -21,7 +21,7 @@ class DrawerWidget extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 60.0, bottom: 20.0),
                 child: Image.asset('assets/logo.png', width: 80, height: 80),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
 
               // Shop tile
               DrawerListTile(
@@ -83,8 +83,8 @@ Future<bool> showLogoutConfirmation(BuildContext context) async {
   return await showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Are you sure?'),
-          content: Text('Do you want to log out of your Account?'),
+          title: const Text('Are you sure?'),
+          content: const Text('Do you want to log out of your Account?'),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
@@ -112,8 +112,8 @@ Future<bool> showExitConfirmation(BuildContext context) async {
         builder: (context) => Padding(
           padding: const EdgeInsets.only(right: 70),
           child: AlertDialog(
-            title: Text('Leaving?'),
-            content: Text('Do you want to exit the App?'),
+            title: const Text('Leaving?'),
+            content: const Text('Do you want to exit the App?'),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.of(context).pop(false),

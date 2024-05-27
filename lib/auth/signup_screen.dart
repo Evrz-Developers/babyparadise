@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter/material.dart';
+import 'package:marginpoint/widgets/custom_text_form_field.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -78,6 +79,62 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
+  Future<void> _handleGoogleSignIn() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) {
+        return; // The user canceled the sign-in
+      }
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      UserCredential userCredential =
+          await _auth.signInWithCredential(credential);
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text(
+                  'User signed in with Google: ${userCredential.user!.email}')),
+        );
+      }
+
+      // Create user document in Firestore if it doesn't exist
+      final userDoc = FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user!.uid);
+      final userSnapshot = await userDoc.get();
+      if (!userSnapshot.exists) {
+        await userDoc.set({
+          'name': googleUser.displayName,
+          'email': googleUser.email,
+          'role': 'user', // Set default role
+        });
+      }
+
+      if (mounted) {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/shop',
+          (route) => false,
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Google sign-in failed. Please try again.'),
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,89 +164,58 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     key: _formKey,
                     child: Column(
                       children: [
-                        TextFormField(
-                          cursorColor:
-                              Theme.of(context).colorScheme.inversePrimary,
+                        CustomTextFormField(
                           controller: _nameController,
+                          labelText: 'Name',
                           keyboardType: TextInputType.name,
-                          decoration: InputDecoration(
-                            border: const OutlineInputBorder(),
-                            focusedBorder: const OutlineInputBorder(),
-                            labelText: 'Name',
-                            labelStyle: TextStyle(
-                              color:
-                                  Theme.of(context).colorScheme.inversePrimary,
-                            ),
-                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              _name = value;
+                            });
+                          },
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'Please enter your name';
                             }
                             return null;
                           },
-                          onChanged: (value) {
-                            setState(() {
-                              _name = value;
-                            });
-                          },
                         ),
                         const SizedBox(height: 20),
-                        TextFormField(
-                          cursorColor:
-                              Theme.of(context).colorScheme.inversePrimary,
+                        CustomTextFormField(
                           controller: _emailController,
+                          labelText: 'Email',
                           keyboardType: TextInputType.emailAddress,
-                          decoration: InputDecoration(
-                            border: const OutlineInputBorder(),
-                            focusedBorder: const OutlineInputBorder(),
-                            labelText: 'Email',
-                            labelStyle: TextStyle(
-                              color:
-                                  Theme.of(context).colorScheme.inversePrimary,
-                            ),
-                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              _email = value;
+                            });
+                          },
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'Please enter your email';
                             }
                             return null;
                           },
-                          onChanged: (value) {
-                            setState(() {
-                              _email = value;
-                            });
-                          },
                         ),
                         const SizedBox(height: 20),
-                        TextFormField(
-                          cursorColor:
-                              Theme.of(context).colorScheme.inversePrimary,
+                        CustomTextFormField(
                           controller: _passwordController,
+                          labelText: 'Password',
+                          keyboardType: TextInputType.text,
                           obscureText: true,
-                          decoration: InputDecoration(
-                            border: const OutlineInputBorder(),
-                            focusedBorder: const OutlineInputBorder(),
-                            labelText: 'Password',
-                            labelStyle: TextStyle(
-                              color:
-                                  Theme.of(context).colorScheme.inversePrimary,
-                            ),
-                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              _password = value;
+                            });
+                          },
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'Please enter your Password';
                             }
                             return null;
                           },
-                          onChanged: (value) {
-                            setState(() {
-                              _password = value;
-                            });
-                          },
                         ),
-                        const SizedBox(
-                          height: 10.0,
-                        ),
+                        const SizedBox(height: 10.0),
                         TextButton(
                           child: const Text("Existing user?",
                               style: TextStyle(color: Colors.blue)),
@@ -214,7 +240,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 style: TextStyle(
                                     color: Theme.of(context)
                                         .colorScheme
-                                        .inversePrimary)))
+                                        .inversePrimary))),
+                        const SizedBox(height: 20.0),
+                        ElevatedButton.icon(
+                          icon: const Icon(Icons.login),
+                          label: const Text('Sign Up with Google'),
+                          onPressed: _handleGoogleSignIn,
+                        ),
                       ],
                     ),
                   ),
