@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sign_in_button/sign_in_button.dart';
 import 'package:marginpoint/auth/auth_service.dart';
 import 'package:marginpoint/utils/firebase_utils.dart';
 
@@ -216,18 +217,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(
                           height: 10.0,
                         ),
-                        ElevatedButton(
+                        SignInButton(
+                          Buttons.google,
+                          text: "Sign in with Google",
                           onPressed: () async {
                             User? user = await _authService.signInWithGoogle();
                             if (user != null) {
                               await _handleUserRole();
                             }
                           },
-                          child: Text("Google Sign in",
-                              style: TextStyle(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .inversePrimary)),
                         ),
                       ],
                     ),

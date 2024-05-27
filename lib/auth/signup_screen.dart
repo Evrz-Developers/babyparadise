@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sign_in_button/sign_in_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -242,11 +243,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         .colorScheme
                                         .inversePrimary))),
                         const SizedBox(height: 20.0),
-                        ElevatedButton.icon(
-                          icon: const Icon(Icons.login),
-                          label: const Text('Sign Up with Google'),
+                        SignInButton(
+                          Buttons.google,
+                          text: "Sign up with Google",
                           onPressed: _handleGoogleSignIn,
-                        ),
+                        )
                       ],
                     ),
                   ),
