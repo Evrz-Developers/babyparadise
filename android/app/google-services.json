@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "58908793058-511g6eg2hcttg6s5st9iqmtdt31vavch.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.marginpoint",
+            "certificate_hash": "32dfda9aba06c6764f1d816295720b1a0895012e"
+          }
+        },
+        {
           "client_id": "58908793058-7fad5bho70vfb5kl0151svscjhsuik61.apps.googleusercontent.com",
           "client_type": 3
         }
