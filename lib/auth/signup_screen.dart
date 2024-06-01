@@ -82,7 +82,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Future<void> _handleGoogleSignIn() async {
     try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+
+      // Sign out any previously signed-in account
+      await googleSignIn.signOut();
+
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
       if (googleUser == null) {
         return; // The user canceled the sign-in
       }
@@ -100,8 +105,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-              content: Text(
-                  'User signed in with Google: ${userCredential.user!.email}')),
+            content: Text(
+                'User signed in with Google: ${userCredential.user!.email}'),
+          ),
         );
       }
 

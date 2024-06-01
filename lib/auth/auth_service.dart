@@ -15,7 +15,8 @@ class AuthService {
       }
 
       // Obtain the auth details from the request
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
 
       // Create a new credential
       final credential = GoogleAuthProvider.credential(
@@ -24,7 +25,8 @@ class AuthService {
       );
 
       // Once signed in, return the UserCredential
-      UserCredential userCredential = await _auth.signInWithCredential(credential);
+      UserCredential userCredential =
+          await _auth.signInWithCredential(credential);
       return userCredential.user;
     } catch (e) {
       print(e);
