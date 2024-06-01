@@ -10,7 +10,7 @@ class ColoredListTile extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 16.0),
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.inversePrimary,
           border: Border(
@@ -21,14 +21,14 @@ class ColoredListTile extends StatelessWidget {
         ),
         child: Row(
           children: [
-            SizedBox(width: 16.0),
+            const SizedBox(width: 16.0),
             Text(
               title,
-              style: TextStyle(fontSize: 18.0, color: Colors.white),
+              style: const TextStyle(fontSize: 18.0, color: Colors.white),
             ),
-            Spacer(),
-            Icon(Icons.arrow_forward_ios),
-            SizedBox(width: 16.0),
+            const Spacer(),
+            const Icon(Icons.arrow_forward_ios),
+            const SizedBox(width: 16.0),
           ],
         ),
       ),

@@ -1,6 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:marginpoint/utils/firebase_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sign_in_button/sign_in_button.dart';
+import 'package:marginpoint/auth/auth_service.dart';
+import 'package:marginpoint/utils/firebase_utils.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,51 +13,25 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _auth = FirebaseAuth.instance;
+  final AuthService _authService = AuthService();
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   bool showSpinner = false;
 
   String _email = "";
   String _password = "";
+
   void _handleSignIn() async {
     try {
-      // Show loader when login starts
       setState(() {
         showSpinner = true;
       });
       await _auth.signInWithEmailAndPassword(
           email: _email, password: _password);
-      // Fetch user data from Firestore
       if (_auth.currentUser != null) {
-        Map<String, dynamic>? userData = await getUserDetails();
-        String? userRole = userData!['role'];
-        print("userRole $userRole");
-        // Navigate to appropriate page based on user role
-        if (userRole == 'admin') {
-          if (mounted) {
-            Navigator.pushNamedAndRemoveUntil(
-                context, '/admin', (route) => false);
-          }
-        } else if (userRole == 'staff') {
-          if (mounted) {
-            Navigator.pushNamedAndRemoveUntil(
-                context, '/staff', (route) => false);
-          }
-        } else {
-          if (mounted) {
-            Navigator.pushNamedAndRemoveUntil(
-                context, '/shop', (route) => false);
-          }
-        }
-
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Successfully logged in!'),
-            ),
-          );
-        }
+        await _handleUserRole();
       }
     } catch (e) {
       if (mounted) {
@@ -65,31 +41,51 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         );
       }
-      // Handle login failure if needed
     } finally {
-      // Hide loader after login completes (whether successful or not)
       setState(() {
         showSpinner = false;
       });
-      // }
-      // .then((value) {
-      // Handle successful login
-      // print('Successfully Logged in');
-      // setState(() {
-      //   showSpinner = false;
-      // });
-      // Navigator.pushNamed(context, '/shop');
+    }
+  }
+
+  Future<void> _handleUserRole() async {
+    Map<String, dynamic>? userData = await getUserDetails();
+    if (userData == null || !userData.containsKey('role')) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('User role not found. Please sign up.'),
+          ),
+        );
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/register', (route) => false);
+      }
+      return;
+    }
+    String? userRole = userData['role'];
+    print("userRole $userData");
+
+    if (userRole == 'admin') {
+      if (mounted) {
+        Navigator.pushNamedAndRemoveUntil(context, '/admin', (route) => false);
+      }
+    } else if (userRole == 'staff') {
+      if (mounted) {
+        Navigator.pushNamedAndRemoveUntil(context, '/staff', (route) => false);
+      }
+    } else {
+      if (mounted) {
+        Navigator.pushNamedAndRemoveUntil(context, '/shop', (route) => false);
+      }
     }
 
-    // on FirebaseAuthException catch (e) {
-    //   if (e.code == 'user-not-found') {
-    //     print('No user found for that email.');
-    //   } else if (e.code == 'wrong-password') {
-    //     print('Wrong password provided for that user.');
-    //   }
-    // catch (e) {
-    //   print(e);
-    // }
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Successfully logged in!'),
+        ),
+      );
+    }
   }
 
   @override
@@ -116,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
               padding: const EdgeInsets.all(8.0),
               child: Center(
                 child: Padding(
-                  padding: EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   child: Form(
                     key: _formKey,
                     child: Column(
@@ -127,8 +123,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            focusedBorder: OutlineInputBorder(),
+                            border: const OutlineInputBorder(),
+                            focusedBorder: const OutlineInputBorder(),
                             labelText: 'Email',
                             labelStyle: TextStyle(
                               color:
@@ -147,15 +143,15 @@ class _LoginScreenState extends State<LoginScreen> {
                             });
                           },
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         TextFormField(
                           cursorColor:
                               Theme.of(context).colorScheme.inversePrimary,
                           controller: _passwordController,
                           obscureText: true,
                           decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            focusedBorder: OutlineInputBorder(),
+                            border: const OutlineInputBorder(),
+                            focusedBorder: const OutlineInputBorder(),
                             labelText: 'Password',
                             labelStyle: TextStyle(
                               color:
@@ -178,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 10.0,
                         ),
                         TextButton(
-                          child: Text("New User?",
+                          child: const Text("New User?",
                               style: TextStyle(color: Colors.blue)),
                           onPressed: () {
                             Navigator.pushNamedAndRemoveUntil(
@@ -217,7 +213,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                       color: Theme.of(context)
                                           .colorScheme
                                           .inversePrimary)),
-                        )
+                        ),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        SignInButton(
+                          Buttons.google,
+                          text: "Sign in with Google",
+                          onPressed: () async {
+                            User? user = await _authService.signInWithGoogle();
+                            if (user != null) {
+                              await _handleUserRole();
+                            }
+                          },
+                        ),
                       ],
                     ),
                   ),

@@ -9,7 +9,7 @@ class ProductTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Icon(Icons.shopping_basket),
+        const Icon(Icons.shopping_basket),
         Text(product.name),
         Text(product.description),
         Text(product.price.toStringAsFixed(2)),

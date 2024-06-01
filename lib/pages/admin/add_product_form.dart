@@ -79,12 +79,12 @@ class _AddProductFormState extends State<AddProductForm> {
     ]) {
       formFields.add(
         Padding(
-          padding: EdgeInsets.symmetric(vertical: 8.0),
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: TextFormField(
             cursorColor: Theme.of(context).colorScheme.inversePrimary,
             decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              focusedBorder: OutlineInputBorder(),
+              border: const OutlineInputBorder(),
+              focusedBorder: const OutlineInputBorder(),
               labelText: field['label'] as String,
               labelStyle: TextStyle(
                 color: Theme.of(context).colorScheme.inversePrimary,
@@ -184,16 +184,16 @@ class _AddProductFormState extends State<AddProductForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Product'),
+        title: const Text('Add Product'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: ListView(
             children: [
               ...buildFormFields(),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               // Add similar TextFormField widgets for other fields
 
               ElevatedButton(
