@@ -92,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
     } else {
       if (mounted) {
         Navigator.pushNamedAndRemoveUntil(
-            context, '/shop', (route) => false);
+            context, '/register', (route) => false);
       }
     }
 
