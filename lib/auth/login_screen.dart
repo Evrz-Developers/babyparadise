@@ -65,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _handleUserRole() async {
     Map<String, dynamic>? userData = await getUserDetails();
-    if (!userData!.containsKey('role')) {
+    if (userData == null || !userData.containsKey('role')) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -91,7 +91,8 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     } else {
       if (mounted) {
-        Navigator.pushNamedAndRemoveUntil(context, '/shop', (route) => false);
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/shop', (route) => false);
       }
     }
 
