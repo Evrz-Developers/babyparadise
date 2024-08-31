@@ -95,6 +95,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Future<void> _handleGoogleSignIn() async {
     try {
+      setState(() {
+        showSpinner = true; // Show loader
+      });
       final GoogleSignIn googleSignIn = GoogleSignIn();
 
       // Sign out any previously signed-in account
@@ -102,6 +105,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
       if (googleUser == null) {
+        setState(() {
+          showSpinner = false; // Hide loader
+        });
         return; // The user canceled the sign-in
       }
 
@@ -144,6 +150,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
           (route) => false,
         );
       }
+      setState(() {
+        showSpinner = false; // Hide loader
+      });
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -152,6 +161,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
         );
       }
+      setState(() {
+        showSpinner = false; // Hide loader
+      });
     }
   }
 
@@ -189,7 +201,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           width: double.infinity,
                           child: SignInButton(
                             Buttons.google,
-                            text: "Sign up with Google",
+                            text: showSpinner
+                                ? "Please hold on..."
+                                : "Sign up with Google",
                             onPressed: _handleGoogleSignIn,
                           ),
                         ),
