@@ -150,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Buttons.google,
                             text: showSpinner
                                 ? "Signing in With Google"
-                                : "Continue with Google", // Show text only when not loading
+                                : "Continue with Google", 
                             onPressed: () async {
                               setState(() {
                                 showSpinner = true; // Show loader
