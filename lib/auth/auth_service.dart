@@ -32,6 +32,7 @@ class AuthService {
           await _auth.signInWithCredential(credential);
       return userCredential.user;
     } catch (e) {
+      // ignore: avoid_print
       print(e);
       return null;
     }

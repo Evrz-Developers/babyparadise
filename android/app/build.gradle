@@ -56,11 +56,21 @@ android {
 
     }
 
+    signingConfigs {
+        release {
+            keyAlias 'marginpoint_release' // Replace with your key alias
+            keyPassword 'marginpoint123' // Replace with your key password
+            storeFile file('../../marginpoint.keystore') // Path to your keystore file
+            storePassword 'marginpoint123' // Replace with your keystore password
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release // Use the release signing configuration
+            minifyEnabled false // Enable or disable code shrinking/obfuscation
+            shrinkResources false // Ensure this is set to false if you don't want resource shrinking
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }

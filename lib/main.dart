@@ -23,6 +23,7 @@ Future main() async {
   Map<String, dynamic>? userData = await getUserDetails();
 
   if (currentUser != null) {
+    // ignore: avoid_print
     print("user-data exists: $userData");
     userData = await getUserDetails();
   }

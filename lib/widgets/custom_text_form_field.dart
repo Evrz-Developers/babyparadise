@@ -7,6 +7,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool obscureText;
   final Function(String) onChanged;
   final String? Function(String?)? validator;
+  final List<String>? autofillHints; // Optional autofill hints
 
   const CustomTextFormField({
     super.key,
@@ -16,6 +17,7 @@ class CustomTextFormField extends StatelessWidget {
     this.obscureText = false,
     required this.onChanged,
     required this.validator,
+    this.autofillHints, // Accept autofill hints as an optional parameter
   });
 
   @override
@@ -35,6 +37,8 @@ class CustomTextFormField extends StatelessWidget {
       ),
       validator: validator,
       onChanged: onChanged,
+      autofillHints: autofillHints, // Use autofill hints if provided
+
     );
   }
 }

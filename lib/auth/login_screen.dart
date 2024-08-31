@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 import 'package:marginpoint/auth/auth_service.dart';
 import 'package:marginpoint/utils/firebase_utils.dart';
+import 'package:marginpoint/widgets/forgot_password_dialog.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -33,11 +34,25 @@ class _LoginScreenState extends State<LoginScreen> {
       if (_auth.currentUser != null) {
         await _handleUserRole();
       }
-    } catch (e) {
+    } on FirebaseAuthException catch (e) {
+      var errorMessage = "";
+      if (e.code == 'invalid-email' || e.code == 'invalid-credential') {
+        errorMessage = 'Invalid email or password';
+      } else if (e.code == 'user-not-found') {
+        errorMessage = 'No user found with this email';
+      } else if (e.code == 'wrong-password') {
+        errorMessage = 'Incorrect password, please try again';
+      } else if (e.code == 'user-disabled') {
+        errorMessage = 'This user has been disabled';
+      } else if (e.code == 'too-many-requests') {
+        errorMessage = 'Too many requests, please try again later';
+      } else if (e.code == 'operation-not-allowed') {
+        errorMessage = 'Signing in with email and password is not enabled';
+      }
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: ${e.toString()}'),
+            content: Text('Nope! $errorMessage '),
           ),
         );
       }
@@ -50,11 +65,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _handleUserRole() async {
     Map<String, dynamic>? userData = await getUserDetails();
-    if (userData == null || !userData.containsKey('role')) {
+    if (!userData!.containsKey('role')) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('User role not found. Please sign up.'),
+            content: Text('Not registered yet? Let\'s sign up.'),
           ),
         );
         Navigator.pushNamedAndRemoveUntil(
@@ -63,6 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
     String? userRole = userData['role'];
+    // ignore: avoid_print
     print("userRole $userData");
 
     if (userRole == 'admin') {
@@ -82,10 +98,19 @@ class _LoginScreenState extends State<LoginScreen> {
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Successfully logged in!'),
+          content: Text('Welcome aboard..'),
         ),
       );
     }
+  }
+
+  void _handleForgotPassword() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const ForgotPasswordDialog();
+      },
+    );
   }
 
   @override
@@ -102,9 +127,9 @@ class _LoginScreenState extends State<LoginScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Center(
-              child: Text("Login",
+              child: Text("Margin Point",
                   style: TextStyle(
-                      fontSize: 40.0,
+                      fontSize: 32.0,
                       fontWeight: FontWeight.w900,
                       color: Theme.of(context).colorScheme.inverseSurface)),
             ),
@@ -117,11 +142,67 @@ class _LoginScreenState extends State<LoginScreen> {
                     key: _formKey,
                     child: Column(
                       children: [
+                        const SizedBox(height: 20),
+                        SizedBox(
+                          width: double.infinity,
+                          child: SignInButton(
+                            Buttons.google,
+                            text: "Continue with Google",
+                            onPressed: () async {
+                              User? user =
+                                  await _authService.signInWithGoogle();
+                              if (user != null) {
+                                await _handleUserRole();
+                              }
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: Divider(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .inversePrimary,
+                                thickness: 1,
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              child: Text(
+                                "or",
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .inverseSurface,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Divider(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .inversePrimary,
+                                thickness: 1,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 30),
+
                         TextFormField(
                           cursorColor:
                               Theme.of(context).colorScheme.inversePrimary,
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
+                          autofillHints: const [
+                            AutofillHints.email
+                          ], // Enable autofill for email
+
                           decoration: InputDecoration(
                             border: const OutlineInputBorder(),
                             focusedBorder: const OutlineInputBorder(),
@@ -170,61 +251,68 @@ class _LoginScreenState extends State<LoginScreen> {
                             });
                           },
                         ),
+                        // const SizedBox(
+                        //   height: 10.0,
+                        // ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            TextButton(
+                              onPressed: _handleForgotPassword,
+                              child: const Text("Forgot Password?",
+                                  style: TextStyle(color: Colors.blue)),
+                            ),
+                          ],
+                        ),
+
                         const SizedBox(
                           height: 10.0,
                         ),
-                        TextButton(
-                          child: const Text("New User?",
-                              style: TextStyle(color: Colors.blue)),
-                          onPressed: () {
-                            Navigator.pushNamedAndRemoveUntil(
-                                context, '/register', (route) => false);
-                          },
+                        // Login button
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 10,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary,
+                            ),
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                setState(() {
+                                  showSpinner = true;
+                                });
+                                _handleSignIn();
+                              }
+                            },
+                            child: showSpinner
+                                ? SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Theme.of(context)
+                                              .colorScheme
+                                              .inversePrimary),
+                                      strokeWidth: 1,
+                                    ),
+                                  )
+                                : Text('Login',
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .inverseSurface)),
+                          ),
                         ),
                         const SizedBox(
                           height: 20.0,
                         ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            elevation: 10,
-                          ),
-                          onPressed: () async {
-                            setState(() {
-                              showSpinner = true;
-                            });
-                            if (_formKey.currentState!.validate()) {
-                              _handleSignIn();
-                            }
-                          },
-                          child: showSpinner
-                              ? SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: CircularProgressIndicator(
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                        Theme.of(context)
-                                            .colorScheme
-                                            .inversePrimary),
-                                    strokeWidth: 1,
-                                  ),
-                                )
-                              : Text('Login',
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .inversePrimary)),
-                        ),
-                        const SizedBox(
-                          height: 10.0,
-                        ),
-                        SignInButton(
-                          Buttons.google,
-                          text: "Sign in with Google",
-                          onPressed: () async {
-                            User? user = await _authService.signInWithGoogle();
-                            if (user != null) {
-                              await _handleUserRole();
-                            }
+                        TextButton(
+                          child: const Text("Don't have an account? Sign up",
+                              style: TextStyle(color: Colors.blue)),
+                          onPressed: () {
+                            Navigator.pushNamedAndRemoveUntil(
+                                context, '/register', (route) => false);
                           },
                         ),
                       ],

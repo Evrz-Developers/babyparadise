@@ -18,12 +18,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool showSpinner = false;
 
   String _name = "";
   String _email = "";
   String _password = "";
+
   void _handlesignup() async {
     try {
+      setState(() {
+        showSpinner = true;
+      });
+      
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: _email, password: _password);
 
@@ -31,11 +37,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
               content: Text(
-                  'User registered with mail: ${userCredential.user!.email}')),
+                  'Registered with ${userCredential.user!.email}')),
         );
       }
 
-      // Create user document in Firestore
+      // Creating user document in Firestore for the user
       await FirebaseFirestore.instance
           .collection('users')
           .doc(userCredential.user!.uid)
@@ -45,9 +51,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         'role': 'user', // Set default role
         // Additional user data fields can be added here
       });
-      // UserCredential userCredential = await _auth
-      //     .createUserWithEmailAndPassword(email: _email, password: _password);
-      // print('user registered ${userCredential.user!.email}');
       if (mounted) {
         Navigator.pushNamedAndRemoveUntil(
           context,
@@ -56,11 +59,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
         );
       }
     } on FirebaseAuthException catch (e) {
-      var errorMessage = "";
+      var errorMessage = "An error occurred";
       if (e.code == 'weak-password') {
         errorMessage = 'The password provided is too weak.';
+      } else if (e.code == 'invalid-email') {
+        errorMessage = 'The email address is not valid.';
       } else if (e.code == 'email-already-in-use') {
         errorMessage = 'The account already exists for that email.';
+      } else if (e.code == 'operation-not-allowed') {
+        errorMessage = 'Email/password accounts are not enabled.';
+      } else if (e.code == 'too-many-requests') {
+        errorMessage = 'Too many requests. Try again later.';
       }
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -73,10 +82,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Please check the Credentials'),
+            content: Text('Oops.. Please check the Credentials'),
           ),
         );
       }
+    } finally {
+      setState(() {
+        showSpinner = false;
+      });
     }
   }
 
@@ -106,7 +119,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-                'User signed in with Google: ${userCredential.user!.email}'),
+                'Welcome aboard, ${googleUser.displayName}'),
           ),
         );
       }
@@ -135,7 +148,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Google sign-in failed. Please try again.'),
+            content: Text('Uh oh.. Google sign-in failed. Please try again.'),
           ),
         );
       }
@@ -156,9 +169,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Center(
-              child: Text("Register",
+              child: Text("Welcome",
                   style: TextStyle(
-                      fontSize: 40.0,
+                      fontSize: 34.0,
                       fontWeight: FontWeight.w900,
                       color: Theme.of(context).colorScheme.inverseSurface)),
             ),
@@ -171,6 +184,51 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     key: _formKey,
                     child: Column(
                       children: [
+                        const SizedBox(height: 20),
+                        SizedBox(
+                          width: double.infinity,
+                          child: SignInButton(
+                            Buttons.google,
+                            text: "Sign up with Google",
+                            onPressed: _handleGoogleSignIn,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: Divider(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .inversePrimary,
+                                thickness: 1,
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              child: Text(
+                                "or",
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .inverseSurface,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Divider(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .inversePrimary,
+                                thickness: 1,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 30),
                         CustomTextFormField(
                           controller: _nameController,
                           labelText: 'Name',
@@ -192,6 +250,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           controller: _emailController,
                           labelText: 'Email',
                           keyboardType: TextInputType.emailAddress,
+                          autofillHints: const [
+                            AutofillHints.email
+                          ], // Pass autofill hints for email
+
                           onChanged: (value) {
                             setState(() {
                               _email = value;
@@ -222,38 +284,55 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             return null;
                           },
                         ),
-                        const SizedBox(height: 10.0),
+                        const SizedBox(
+                          height: 30.0,
+                        ),
+                        SizedBox(
+                          width: double.infinity,
+                          child: 
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                elevation: 10,
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.primary,
+                            ),
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                  setState(() {
+                                    showSpinner = true;
+                                  });
+                                _handlesignup();
+                              }
+                            },
+                              child: showSpinner
+                                  ? SizedBox(
+                                      height: 20,
+                                      width: 20,
+                                      child: CircularProgressIndicator(
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                Theme.of(context)
+                                                    .colorScheme
+                                                    .inversePrimary),
+                                        strokeWidth: 1,
+                                      ),
+                                    )
+                                  : Text('Sign Up',
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                              .inversePrimary))),
+                        ),
+                        const SizedBox(height: 20.0),
                         TextButton(
-                          child: const Text("Existing user?",
+                          child: const Text("Existing user? Login!",
                               style: TextStyle(color: Colors.blue)),
                           onPressed: () {
                             Navigator.pushNamedAndRemoveUntil(
                                 context, '/login', (route) => false);
                           },
                         ),
-                        const SizedBox(
-                          height: 24.0,
-                        ),
-                        ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              elevation: 10,
-                            ),
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                _handlesignup();
-                              }
-                            },
-                            child: Text('Sign Up',
-                                style: TextStyle(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .inversePrimary))),
-                        const SizedBox(height: 20.0),
-                        SignInButton(
-                          Buttons.google,
-                          text: "Sign up with Google",
-                          onPressed: _handleGoogleSignIn,
-                        )
+
                       ],
                     ),
                   ),
