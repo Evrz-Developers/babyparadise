@@ -89,6 +89,10 @@ class _LoginScreenState extends State<LoginScreen> {
       if (mounted) {
         Navigator.pushNamedAndRemoveUntil(context, '/staff', (route) => false);
       }
+    } else if (userRole == 'user') {
+      if (mounted) {
+        Navigator.pushNamedAndRemoveUntil(context, '/shop', (route) => false);
+      }
     } else {
       if (mounted) {
         Navigator.pushNamedAndRemoveUntil(
