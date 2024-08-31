@@ -146,10 +146,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 20),
                         SizedBox(
                           width: double.infinity,
+                          
                           child: SignInButton(
                             Buttons.google,
                             text: showSpinner
-                                ? "Signing in With Google"
+                                ? "Please hold on..."
                                 : "Continue with Google", 
                             onPressed: () async {
                               setState(() {
