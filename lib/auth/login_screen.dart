@@ -148,15 +148,24 @@ class _LoginScreenState extends State<LoginScreen> {
                           width: double.infinity,
                           child: SignInButton(
                             Buttons.google,
-                            text: "Continue with Google",
+                            text: showSpinner
+                                ? "Signing in With Google"
+                                : "Continue with Google", // Show text only when not loading
                             onPressed: () async {
+                              setState(() {
+                                showSpinner = true; // Show loader
+                              });
                               User? user =
                                   await _authService.signInWithGoogle();
                               if (user != null) {
                                 await _handleUserRole();
                               }
+                              setState(() {
+                                showSpinner = false; // Hide loader
+                              });
                             },
                           ),
+                          
                         ),
                         const SizedBox(height: 20),
                         Row(
