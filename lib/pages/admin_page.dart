@@ -56,12 +56,15 @@ class _AdminPageState extends State<AdminPage> {
                 ),
               ],
             ),
-            Center(
-              child: ListTile(
-                title: Text('Logged in as $email'),
-              ),
-            ),
-          ],
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Text(
+          'Logged in as: $email',
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.secondary,
+            fontSize: 14,
+          ),
+          textAlign: TextAlign.center,
         ),
       ),
       drawer: DrawerWidget(),
