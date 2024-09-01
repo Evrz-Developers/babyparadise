@@ -14,7 +14,7 @@ class ShopPage extends StatefulWidget {
 class _ShopPageState extends State<ShopPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String? _userName;
-  String? _userRole; 
+  String? _userRole;
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ class _ShopPageState extends State<ShopPage> {
     }
   }
 
-  // Fetch products{} 
+  // Fetch products{}
   List<Map<String, dynamic>> _products = [];
   Future<void> _fetchProducts() async {
     User? user = _auth.currentUser;
@@ -124,72 +124,36 @@ class _ShopPageState extends State<ShopPage> {
         // centerTitle: true,
       ),
       body: RefreshIndicator(
-        // Add RefreshIndicator
-        onRefresh: _fetchProducts, // Call _fetchProducts on refresh
-        child: _userName == null
-            ? const Center(
-                child: CircularProgressIndicator()) // Center loading indicator
-            : ListView(
-                // Use ListView for scrollable content
-                padding: const EdgeInsets.all(16.0), // Add padding
-                children: [
-                  const SizedBox(height: 10),
-                  const SizedBox(height: 20), // Add spacing
-                  ..._products.map((product) => ProductListItem(
-                      productId: product['id'],
-                      productName: product['name'] ??
-                          'Unknown Product')), // List products
-                ],
-              ),
+        onRefresh: _fetchProducts,
+        child: FutureBuilder<void>(
+          future: _fetchProducts(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else {
+              return _userName == null
+                  ? const Center(
+                      child: CircularProgressIndicator())
+                  : ListView(
+                      padding: const EdgeInsets.all(16.0),
+                      children: [
+                        const SizedBox(height: 10),
+                        const SizedBox(height: 20),
+                        ..._products.map(
+                          (product) => CustomListTile(
+                            itemName: product['name'],
+                            itemId: product['id'],
+                          ),
+                        ),
+                      ],
+                    );
+            }
+          },
+        ),
       ),
       drawer: DrawerWidget(),
-    );
-  }
-}
-// TODO: Move the Widget to another Page
-class ProductListItem extends StatelessWidget {
-  final String productId; // Add a named parameter
-  final String productName; // Add a named parameter
-
-  const ProductListItem({
-    super.key,
-    required this.productId, // Mark it as required
-    required this.productName, // Mark it as required
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 1,
-            blurRadius: 3,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: ListTile(
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        title: Text(
-          productName,
-          style: const TextStyle(
-            fontSize: 16.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 16.0),
-        onTap: () {
-          Navigator.pushNamed(context, '/product_details', arguments: {
-            'productId': productId
-          }); // Navigate to product details
-        },
-      ),
     );
   }
 }
