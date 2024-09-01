@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:marginpoint/pages/products/product_detail_page.dart';
-import 'package:marginpoint/utils/firebase_utils.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:marginpoint/firebase_options.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:marginpoint/utils/firebase_utils.dart';
 
-import 'package:marginpoint/auth/login_screen.dart';
-import 'package:marginpoint/auth/signup_screen.dart';
-import 'package:marginpoint/pages/admin/product_page.dart';
-import 'package:marginpoint/pages/admin_page.dart';
+import 'package:marginpoint/pages/shop_page.dart';
 import 'package:marginpoint/pages/cart_page.dart';
 import 'package:marginpoint/pages/intro_page.dart';
-import 'package:marginpoint/pages/shop_page.dart';
+import 'package:marginpoint/pages/admin_page.dart';
 import 'package:marginpoint/pages/staff_page.dart';
+import 'package:marginpoint/auth/login_screen.dart';
 import 'package:marginpoint/themes/light_mode.dart';
+import 'package:marginpoint/auth/signup_screen.dart';
+import 'package:marginpoint/pages/admin/product_page.dart';
+import 'package:marginpoint/pages/products/product_detail_page.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
