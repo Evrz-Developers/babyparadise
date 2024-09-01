@@ -78,12 +78,12 @@ class App extends StatelessWidget {
                 ModalRoute.of(context)!.settings.arguments; // Get the arguments
             if (args is Map<String, dynamic>) {
               // Check if args is a Map
-              final productId =
-                  args['productId'] as String; // Extract productId from the map
+              final itemId =
+                  args['itemId'] as String; // Extract itemId from the map
               return ProductDetailPage(
-                  productId: productId); // Pass the product ID to the page
+                  productId: itemId); // Pass the product ID to the page
             } else {
-              // Handle the error or provide a default value
+              // TODO: Change defaultId and do a fix for error handling
               return const ProductDetailPage(productId: 'defaultId');
             }
           },
