@@ -36,31 +36,40 @@ class _ShopPageState extends State<ShopPage> {
     }
   }
 
-  // Fetch products{} and add to _products[]
+  // Fetch products{} 
   List<Map<String, dynamic>> _products = [];
-
   Future<void> _fetchProducts() async {
     User? user = _auth.currentUser;
     if (user != null) {
-      QuerySnapshot productDocs =
-          await FirebaseFirestore.instance.collection('products').get();
-      if (productDocs.docs.isEmpty) {
-        // ignore: avoid_print
-        print("No products found.");
-      } else {
-        _products = productDocs.docs.map((doc) {
-          return {
-            'id': doc.id,
-            'name': doc['name'] ?? 'Unknown Product',
-          };
-        }).toList();
-
-        // ignore: avoid_print
-        print('productDocs ${_products}');
-        // DEBUG: Poducts list
-        // for (var product in productsList) {
-        //   print('productDocs ID: ${product['id']}, Name: ${product['name']}');
-        // }
+      try {
+        QuerySnapshot productDocs =
+            await FirebaseFirestore.instance.collection('products').get();
+        if (productDocs.docs.isEmpty) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("No products found.")),
+            );
+          }
+        } else {
+          _products = productDocs.docs.map((doc) {
+            return {
+              'id': doc.id,
+              'name': doc['name'] ?? 'Unknown Item',
+            };
+          }).toList();
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error loading products: $e')),
+          );
+        }
+      }
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Not logged in.")),
+        );
       }
     }
   }
