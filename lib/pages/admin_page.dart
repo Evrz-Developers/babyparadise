@@ -12,6 +12,19 @@ class AdminPage extends StatefulWidget {
 
 class _AdminPageState extends State<AdminPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  bool _isVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Hide the text initially and show it after 2 seconds
+    Future.delayed(Duration(seconds: 1), () {
+      setState(() {
+        _isVisible = true;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     String? email = _auth.currentUser!.email;
@@ -55,15 +68,19 @@ class _AdminPageState extends State<AdminPage> {
             ),
         ],
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Text(
-          'Logged in as: $email',
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.secondary,
-            fontSize: 14,
+      bottomNavigationBar: AnimatedOpacity(
+        opacity: _isVisible ? 1.0 : 0.0,
+        duration: const Duration(seconds: 2),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            'Logged in as: $email',
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.secondary,
+              fontSize: 14,
+            ),
+            textAlign: TextAlign.center,
           ),
-          textAlign: TextAlign.center,
         ),
       ),
       drawer: DrawerWidget(),
