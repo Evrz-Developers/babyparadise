@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:marginpoint/pages/products/product_detail_page.dart';
 import 'package:marginpoint/utils/firebase_utils.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:marginpoint/firebase_options.dart';
@@ -62,8 +63,6 @@ class App extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Margin-Point',
         theme: lightMode,
-        // home:
-        //     _auth.currentUser != null ? const ShopPage() : const LoginScreen(),
         home: userData != null ? buildHomePage(userData!) : const LoginScreen(),
         routes: {
           '/register': (context) => const SignUpScreen(),
@@ -74,6 +73,20 @@ class App extends StatelessWidget {
           '/shop': (context) => const ShopPage(),
           '/cart': (context) => const CartPage(),
           '/admin_product': (context) => const ProductPage(),
+          '/product_details': (context) {
+            final args =
+                ModalRoute.of(context)!.settings.arguments; // Get the arguments
+            if (args is Map<String, dynamic>) {
+              // Check if args is a Map
+              final productId =
+                  args['productId'] as String; // Extract productId from the map
+              return ProductDetailPage(
+                  productId: productId); // Pass the product ID to the page
+            } else {
+              // Handle the error or provide a default value
+              return const ProductDetailPage(productId: 'defaultId');
+            }
+          },
         });
   }
 }
