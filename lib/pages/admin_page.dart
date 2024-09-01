@@ -42,20 +42,22 @@ class _AdminPageState extends State<AdminPage> {
                     }
                   },
                 ),
-                ColoredListTile(
-                  title: 'Categories',
+              CustomListTile(
+                itemName: 'Categories',
                   onTap: () {
-                    // Navigate to categories section
+                  // TODO: Navigate to categories section
                   },
                 ),
-                ColoredListTile(
-                  title: 'Users',
+              CustomListTile(
+                itemName: 'Users',
                   onTap: () {
-                    // Navigate to users section
+                  // TODO: Navigate to users section
                   },
                 ),
               ],
             ),
+        ],
+      ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Text(
