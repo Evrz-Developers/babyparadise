@@ -28,6 +28,7 @@ class DrawerWidget extends StatelessWidget {
                   onTap: () {
                     // pop drawer
                     Navigator.pop(context);
+                    Navigator.pushNamed(context, '/shop');
                   },
                   text: 'Shop',
                   icon: Icons.home),
