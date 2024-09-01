@@ -18,8 +18,10 @@ class _ShopPageState extends State<ShopPage> {
   void initState() {
     super.initState();
     _fetchUserName();
+    _fetchProducts();
   }
 
+  // Fetch logged in user details if required:
   Future<void> _fetchUserName() async {
     User? user = _auth.currentUser;
     if (user != null) {
@@ -33,37 +35,143 @@ class _ShopPageState extends State<ShopPage> {
     }
   }
 
+  // Fetch products{} and add to _products[]
+  List<Map<String, dynamic>> _products = [];
+
+  Future<void> _fetchProducts() async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      QuerySnapshot productDocs =
+          await FirebaseFirestore.instance.collection('products').get();
+      if (productDocs.docs.isEmpty) {
+        // ignore: avoid_print
+        print("No products found.");
+      } else {
+        _products = productDocs.docs.map((doc) {
+          return {
+            'id': doc.id,
+            'name': doc['name'] ?? 'Unknown Product',
+          };
+        }).toList();
+
+        // ignore: avoid_print
+        print('productDocs ${_products}');
+        // DEBUG: Poducts list
+        // for (var product in productsList) {
+        //   print('productDocs ID: ${product['id']}, Name: ${product['name']}');
+        // }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    String? email = _auth.currentUser!.email;
+    // String? email = _auth.currentUser!.email;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         foregroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Shop'),
-        centerTitle: true,
+        title: Row(
+          children: [
+            const Text(
+              'Margin Point',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(width: 8),
+            const Spacer(),
+            Text(
+              '$_userName',
+              style: TextStyle(
+                fontSize: 14,
+                color: Theme.of(context)
+                    .colorScheme
+                    .inversePrimary
+                    .withOpacity(0.7),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.shopping_cart),
+            onPressed: () {
+              Navigator.pushNamed(context, '/cart');
+            },
+          ),
+        ],
+        // centerTitle: true,
       ),
-      body: Center(
+      body: RefreshIndicator(
+        // Add RefreshIndicator
+        onRefresh: _fetchProducts, // Call _fetchProducts on refresh
         child: _userName == null
-            ? const CircularProgressIndicator()
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+            ? const Center(
+                child: CircularProgressIndicator()) // Center loading indicator
+            : ListView(
+                // Use ListView for scrollable content
+                padding: const EdgeInsets.all(16.0), // Add padding
                 children: [
-                  Text(
-                    '$_userName',
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
                   const SizedBox(height: 10),
-                  Text(
-                    '$email',
-                    style: const TextStyle(fontSize: 16),
-                  ),
+                  const SizedBox(height: 20), // Add spacing
+                  ..._products.map((product) => ProductListItem(
+                      productId: product['id'],
+                      productName: product['name'] ??
+                          'Unknown Product')), // List products
                 ],
               ),
       ),
       drawer: DrawerWidget(),
+    );
+  }
+}
+// TODO: Move the Widget to another Page
+class ProductListItem extends StatelessWidget {
+  final String productId; // Add a named parameter
+  final String productName; // Add a named parameter
+
+  const ProductListItem({
+    super.key,
+    required this.productId, // Mark it as required
+    required this.productName, // Mark it as required
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 3,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: ListTile(
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        title: Text(
+          productName,
+          style: const TextStyle(
+            fontSize: 16.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        trailing: const Icon(Icons.arrow_forward_ios, size: 16.0),
+        onTap: () {
+          Navigator.pushNamed(context, '/product_details', arguments: {
+            'productId': productId
+          }); // Navigate to product details
+        },
+      ),
     );
   }
 }
