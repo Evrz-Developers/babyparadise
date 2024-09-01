@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:marginpoint/components/colored_list_tile.dart';
+import 'package:marginpoint/components/custom_list_tile.dart';
 import 'package:marginpoint/components/drawer.dart';
 
 class AdminPage extends StatefulWidget {
