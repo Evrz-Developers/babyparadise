@@ -24,19 +24,16 @@ class _AdminPageState extends State<AdminPage> {
         title: const Text('Admin Dashboard'),
         centerTitle: true,
       ),
-      body: Center(
-        child:
-            // padding: EdgeInsets.zero,
-            Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: ListView(
+        padding: const EdgeInsets.all(16.0), 
           children: [
+          const SizedBox(height: 10),
             Column(
               children: [
                 const SizedBox(height: 20),
-                ColoredListTile(
-                  title: 'Products',
-                  onTap: () {
-                    // Navigate to products section
+              CustomListTile(
+                itemName: 'Products',
+                onTap: () {
                     if (mounted) {
                       Navigator.pushNamed(context, '/admin_product');
                     }
