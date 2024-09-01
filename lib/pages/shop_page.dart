@@ -14,6 +14,7 @@ class ShopPage extends StatefulWidget {
 class _ShopPageState extends State<ShopPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String? _userName;
+  String? _userRole; 
 
   @override
   void initState() {
@@ -32,6 +33,7 @@ class _ShopPageState extends State<ShopPage> {
           .get();
       setState(() {
         _userName = userDoc['name'];
+        _userRole = userDoc['role'];
       });
     }
   }
@@ -76,7 +78,6 @@ class _ShopPageState extends State<ShopPage> {
 
   @override
   Widget build(BuildContext context) {
-    // String? email = _auth.currentUser!.email;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -93,14 +94,21 @@ class _ShopPageState extends State<ShopPage> {
             ),
             const SizedBox(width: 8),
             const Spacer(),
-            Text(
-              '$_userName',
-              style: TextStyle(
-                fontSize: 14,
-                color: Theme.of(context)
-                    .colorScheme
-                    .inversePrimary
-                    .withOpacity(0.7),
+            GestureDetector(
+              onTap: () {
+                if (_userRole == 'admin') {
+                  Navigator.pushNamed(context, '/admin');
+                }
+              },
+              child: Text(
+                '$_userName',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Theme.of(context)
+                      .colorScheme
+                      .inversePrimary
+                      .withOpacity(0.7),
+                ),
               ),
             ),
           ],
