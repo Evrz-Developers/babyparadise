@@ -99,14 +99,14 @@ class _LoginScreenState extends State<LoginScreen> {
             context, '/register', (route) => false);
       }
     }
-
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Welcome aboard..'),
-        ),
-      );
-    }
+    // Not showing welcome message
+    // if (mounted) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(
+    //       content: Text('Welcome aboard..'),
+    //     ),
+    //   );
+    // }
   }
 
   void _handleForgotPassword() {
