@@ -2,10 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:marginpoint/components/drawer_list_tile.dart';
+import 'package:get/get.dart';
+import 'package:marginpoint/services/user_controller.dart';
 
 class DrawerWidget extends StatelessWidget {
   DrawerWidget({super.key});
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final UserController userController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +26,15 @@ class DrawerWidget extends StatelessWidget {
               ),
               const SizedBox(height: 10),
 
+              if (UserController.to.userRole == 'admin')
+                DrawerListTile(
+                    onTap: () {
+                      // pop drawer
+                      Navigator.pop(context);
+                      Navigator.pushNamed(context, '/admin');
+                    },
+                    text: 'Dashboard',
+                    icon: Icons.dashboard),
               // Shop tile
               DrawerListTile(
                   onTap: () {
@@ -33,7 +45,8 @@ class DrawerWidget extends StatelessWidget {
                   text: 'Shop',
                   icon: Icons.home),
 
-              // Orders tile
+              // Cart tile
+              if (UserController.to.userRole != 'admin')
               DrawerListTile(
                   onTap: () {
                     Navigator.pop(context);

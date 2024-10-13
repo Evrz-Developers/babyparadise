@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:marginpoint/firebase_options.dart';
 import 'package:marginpoint/utils/firebase_utils.dart';
+import 'package:get/get.dart';
+import 'package:marginpoint/services/user_controller.dart';
 
 import 'package:marginpoint/pages/shop_page.dart';
 import 'package:marginpoint/pages/cart_page.dart';
@@ -21,13 +23,21 @@ Future main() async {
       name: 'marginpoint', options: DefaultFirebaseOptions.currentPlatform);
   FirebaseAuth auth = FirebaseAuth.instance;
   User? currentUser = auth.currentUser;
+  final UserController userController = Get.put(UserController());
   Map<String, dynamic>? userData = await getUserDetails();
 
   if (currentUser != null) {
     // ignore: avoid_print
     print("user-data exists: $userData");
     userData = await getUserDetails();
+    userController.setUserDetails(
+        isLoggedIn: true,
+        id: userData?['userId'] ?? '',
+        role: userData?['role'] ?? '',
+        name: userData?['name'] ?? '',
+        email: userData?['email'] ?? '');
   }
+  Get.put(UserController()); // Bind UserController to GetX
   runApp(App(userData: userData));
 }
 

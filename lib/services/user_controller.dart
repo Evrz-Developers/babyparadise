@@ -1,17 +1,23 @@
 import 'package:get/get.dart';
 
 class UserController extends GetxController {
+  bool isLoggedIn = false;
   String userRole = '';
   String userId = '';
   String userName = '';
   String userEmail = '';
 
   void setUserDetails(
-      {String? role, String? id, required String name, required String email}) {
+      {bool? isLoggedIn,
+      String? role,
+      String? id,
+      String? name,
+      String? email}) {
+    this.isLoggedIn = isLoggedIn ?? false;
     userId = id ?? '';
     userRole = role ?? '';
-    userName = name;
-    userEmail = email;
+    userName = name ?? '';
+    userEmail = email ?? '';
     update();
   }
 

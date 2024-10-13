@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:marginpoint/widgets/custom_text_form_field.dart';
+import 'package:get/get.dart';
+import 'package:marginpoint/services/user_controller.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -23,6 +25,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String _name = "";
   String _email = "";
   String _password = "";
+
+  final UserController userController = Get.put(UserController());
 
   void _handlesignup() async {
     try {
@@ -58,6 +62,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
           (route) => false,
         );
       }
+      // Once user is registered, save the user details to the controller
+      userController.setUserDetails(
+          isLoggedIn: true,
+          id: userCredential.user!.uid,
+          role: 'user',
+          name: _name,
+          email: _email);
     } on FirebaseAuthException catch (e) {
       var errorMessage = "An error occurred";
       if (e.code == 'weak-password') {
@@ -121,6 +132,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       UserCredential userCredential =
           await _auth.signInWithCredential(credential);
 
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -129,6 +141,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
         );
       }
+      userController.setUserDetails(
+          isLoggedIn: true,
+          id: userCredential.user!.uid,
+          role: 'user',
+          name: googleUser.displayName ?? '',
+          email: googleUser.email);
 
       // Create user document in Firestore if it doesn't exist
       final userDoc = FirebaseFirestore.instance

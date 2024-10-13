@@ -4,6 +4,8 @@ import 'package:sign_in_button/sign_in_button.dart';
 import 'package:marginpoint/auth/auth_service.dart';
 import 'package:marginpoint/utils/firebase_utils.dart';
 import 'package:marginpoint/widgets/forgot_password_dialog.dart';
+import 'package:get/get.dart';
+import 'package:marginpoint/services/user_controller.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,10 +17,10 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _auth = FirebaseAuth.instance;
   final AuthService _authService = AuthService();
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final UserController userController = Get.find();
   bool showSpinner = false;
 
   String _email = "";
@@ -77,6 +79,13 @@ class _LoginScreenState extends State<LoginScreen> {
       }
       return;
     }
+    userController.setUserDetails(
+        isLoggedIn: true,
+        id: userData['userId'],
+        role: userData['role'],
+        name: userData['name'],
+        email: userData['email']);
+  
     String? userRole = userData['role'];
     // ignore: avoid_print
     print("userRole $userData");

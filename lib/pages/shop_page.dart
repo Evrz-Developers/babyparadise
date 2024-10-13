@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:marginpoint/components/custom_list_tile.dart';
 import 'package:marginpoint/components/drawer.dart';
+import 'package:marginpoint/pages/profile_page.dart';
+import 'package:get/get.dart';
+import 'package:marginpoint/services/user_controller.dart';
 
 class ShopPage extends StatefulWidget {
   const ShopPage({super.key});
@@ -13,29 +16,12 @@ class ShopPage extends StatefulWidget {
 
 class _ShopPageState extends State<ShopPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  String? _userName;
-  String? _userRole;
+  final UserController userController = Get.find();
 
   @override
   void initState() {
     super.initState();
-    _fetchUserName();
     _fetchProducts();
-  }
-
-  // Fetch logged in user details if required:
-  Future<void> _fetchUserName() async {
-    User? user = _auth.currentUser;
-    if (user != null) {
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .get();
-      setState(() {
-        _userName = userDoc['name'];
-        _userRole = userDoc['role'];
-      });
-    }
   }
 
   // Fetch products{}
@@ -94,9 +80,15 @@ class _ShopPageState extends State<ShopPage> {
             ),
             const SizedBox(width: 8),
             const Spacer(),
-            GestureDetector(
-              onTap: () {
-                if (_userRole == 'admin') {
+            // Cart icon
+            if (userController.userRole != 'admin')
+              IconButton(
+                icon: const Icon(Icons.shopping_cart),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/cart');
+                },
+              ),
+
                   Navigator.pushNamed(context, '/admin');
                 }
               },
@@ -133,12 +125,12 @@ class _ShopPageState extends State<ShopPage> {
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else {
-              return _userName == null
-                  ? const Center(
-                      child: CircularProgressIndicator())
+              return !userController.isLoggedIn
+                  ? const Center(child: CircularProgressIndicator())
                   : ListView(
                       padding: const EdgeInsets.all(16.0),
                       children: [
+                        Text(userController.userName),
                         const SizedBox(height: 10),
                         const SizedBox(height: 20),
                         ..._products.map(
