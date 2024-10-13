@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:marginpoint/components/custom_list_tile.dart';
 import 'package:marginpoint/components/drawer.dart';
+import 'package:marginpoint/pages/profile_page.dart';
 
 class AdminPage extends StatefulWidget {
   const AdminPage({super.key});
@@ -35,6 +36,17 @@ class _AdminPageState extends State<AdminPage> {
         elevation: 0,
         foregroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('Admin Dashboard'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.account_circle),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfilePage()),
+              );
+            },
+          ),
+        ],
         centerTitle: true,
       ),
       body: ListView(
