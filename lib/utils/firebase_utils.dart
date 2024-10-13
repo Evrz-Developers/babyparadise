@@ -12,14 +12,12 @@ Future<Map<String, dynamic>?> getUserDetails() async {
           .doc(_auth.currentUser!.uid)
           .get();
       Map<String, dynamic>? userData = snapshot.data() as Map<String, dynamic>?;
-
-      // Return user data
+      userData?['userId'] = _auth.currentUser!.uid; // Include user ID in user data
       return userData;
     }
     // Return null if user is not logged in
     return null;
   } catch (e) {
-    // Return error if any
-    rethrow;
+    rethrow; // Return error if any
   }
 }
