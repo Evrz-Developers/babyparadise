@@ -19,7 +19,7 @@ class _AdminPageState extends State<AdminPage> {
   void initState() {
     super.initState();
     // Hide the text initially and show it after 2 seconds
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 1), () {
       setState(() {
         _isVisible = true;
       });
@@ -35,7 +35,7 @@ class _AdminPageState extends State<AdminPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         foregroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Admin Dashboard'),
+        title: const Text('Dashboard'),
         actions: [
           IconButton(
             icon: const Icon(Icons.account_circle),
