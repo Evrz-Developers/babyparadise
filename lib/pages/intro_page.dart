@@ -15,7 +15,7 @@ class IntroPage extends StatelessWidget {
           // spacing
           const SizedBox(height: 25),
           // Title
-          Text('Margin Point',
+          Text('Baby Paradise',
               style: TextStyle(
                   fontSize: 30,
                   color: Theme.of(context).colorScheme.inversePrimary)),

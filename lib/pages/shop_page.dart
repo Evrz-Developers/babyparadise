@@ -72,7 +72,7 @@ class _ShopPageState extends State<ShopPage> {
         title: Row(
           children: [
             const Text(
-              'Margin Point',
+              'Baby Paradise',
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,

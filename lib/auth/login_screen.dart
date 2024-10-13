@@ -141,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Center(
-              child: Text("Margin Point",
+              child: Text("Baby Paradise",
                   style: TextStyle(
                       fontSize: 32.0,
                       fontWeight: FontWeight.w900,
