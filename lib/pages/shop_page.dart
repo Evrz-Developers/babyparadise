@@ -89,27 +89,37 @@ class _ShopPageState extends State<ShopPage> {
                 },
               ),
 
+            // Dashboard icon
+            if (userController.userRole == 'admin')
+              GestureDetector(
+                  onTap: () {
+                    if (userController.userRole == 'admin') {
                   Navigator.pushNamed(context, '/admin');
                 }
               },
-              child: Text(
-                '$_userName',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Theme.of(context)
-                      .colorScheme
-                      .inversePrimary
-                      .withOpacity(0.7),
-                ),
-              ),
-            ),
+                  child: const Row(
+                    children: [
+                      Text(
+                        'Dashboard ',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ), // Add this linebetween text and icon
+                      Icon(Icons.dashboard_rounded, size: 20),
+                    ],
+                  )),
+  
           ],
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.shopping_cart),
+            icon: const Icon(Icons.account_circle),
             onPressed: () {
-              Navigator.pushNamed(context, '/cart');
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfilePage()),
+              );
             },
           ),
         ],
