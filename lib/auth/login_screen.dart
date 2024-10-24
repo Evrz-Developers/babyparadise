@@ -141,11 +141,18 @@ class _LoginScreenState extends State<LoginScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Center(
-              child: Text("Baby Paradise",
-                  style: TextStyle(
-                      fontSize: 32.0,
-                      fontWeight: FontWeight.w900,
-                      color: Theme.of(context).colorScheme.inverseSurface)),
+              child: Image.asset('assets/logo.png', width: 100, height: 100),
+            ),
+            const SizedBox(height: 20),
+            Center(
+              child: Text(
+                "LOGIN",
+                style: TextStyle(
+                  fontSize: 32.0,
+                  fontWeight: FontWeight.w100,
+                  color: Theme.of(context).colorScheme.inverseSurface,
+                ),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),

@@ -199,10 +199,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Center(
-              child: Text("Welcome",
+              child: Image.asset('assets/logo.png', width: 100, height: 100),
+            ),
+            const SizedBox(height: 20),
+            Center(
+              child: Text("WELCOME",
                   style: TextStyle(
                       fontSize: 34.0,
-                      fontWeight: FontWeight.w900,
+                      fontWeight: FontWeight.w100,
                       color: Theme.of(context).colorScheme.inverseSurface)),
             ),
             Padding(
