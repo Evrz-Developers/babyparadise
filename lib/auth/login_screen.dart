@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sign_in_button/sign_in_button.dart';
-import 'package:marginpoint/auth/auth_service.dart';
-import 'package:marginpoint/utils/firebase_utils.dart';
-import 'package:marginpoint/widgets/forgot_password_dialog.dart';
+import 'package:babyparadise/auth/auth_service.dart';
+import 'package:babyparadise/utils/firebase_utils.dart';
+import 'package:babyparadise/widgets/forgot_password_dialog.dart';
 import 'package:get/get.dart';
-import 'package:marginpoint/services/user_controller.dart';
+import 'package:babyparadise/services/user_controller.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _handleUserRole() async {
     Map<String, dynamic>? userData = await getUserDetails();
-    if (userData == null || !userData.containsKey('role')) {
+    if (userData != null && !userData.containsKey('role')) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -81,12 +81,12 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     userController.setUserDetails(
         isLoggedIn: true,
-        id: userData['userId'],
-        role: userData['role'],
-        name: userData['name'],
-        email: userData['email']);
+        id: userData?['userId'],
+        role: userData?['role'],
+        name: userData?['name'],
+        email: userData?['email']);
   
-    String? userRole = userData['role'];
+    String? userRole = userData?['role'];
     // ignore: avoid_print
     print("userRole $userData");
 

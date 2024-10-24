@@ -1,4 +1,4 @@
-import 'package:marginpoint/models/product.dart';
+import 'package:babyparadise/models/product.dart';
 
 class Shop {
   // products for sale

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:marginpoint/auth/signup_screen.dart';
+import 'package:babyparadise/auth/signup_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

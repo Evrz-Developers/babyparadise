@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "marginpoint" "\0"
+            VALUE "FileDescription", "babyparadise" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "marginpoint" "\0"
+            VALUE "InternalName", "babyparadise" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2024 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "marginpoint.exe" "\0"
-            VALUE "ProductName", "marginpoint" "\0"
+            VALUE "OriginalFilename", "babyparadise.exe" "\0"
+            VALUE "ProductName", "babyparadise" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

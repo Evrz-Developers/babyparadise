@@ -3,9 +3,9 @@ import 'package:sign_in_button/sign_in_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:marginpoint/widgets/custom_text_form_field.dart';
+import 'package:babyparadise/widgets/custom_text_form_field.dart';
 import 'package:get/get.dart';
-import 'package:marginpoint/services/user_controller.dart';
+import 'package:babyparadise/services/user_controller.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});

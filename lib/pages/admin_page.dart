@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:marginpoint/components/custom_list_tile.dart';
-import 'package:marginpoint/components/drawer.dart';
-import 'package:marginpoint/pages/profile_page.dart';
+import 'package:babyparadise/components/custom_list_tile.dart';
+import 'package:babyparadise/components/drawer.dart';
+import 'package:babyparadise/pages/profile_page.dart';
 
 class AdminPage extends StatefulWidget {
   const AdminPage({super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:marginpoint/pages/admin/add_product_form.dart';
+import 'package:babyparadise/pages/admin/add_product_form.dart';
 
 class ProductPage extends StatelessWidget {
   const ProductPage({super.key});
