@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:marginpoint/components/drawer.dart';
+import 'package:babyparadise/components/drawer.dart';
 
 class StaffPage extends StatefulWidget {
   const StaffPage({super.key});

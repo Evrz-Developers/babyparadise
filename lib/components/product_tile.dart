@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:marginpoint/models/product.dart';
+import 'package:babyparadise/models/product.dart';
 
 class ProductTile extends StatelessWidget {
   final Product product;

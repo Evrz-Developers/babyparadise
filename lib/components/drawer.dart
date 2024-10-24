@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:marginpoint/components/drawer_list_tile.dart';
+import 'package:babyparadise/components/drawer_list_tile.dart';
 import 'package:get/get.dart';
-import 'package:marginpoint/services/user_controller.dart';
+import 'package:babyparadise/services/user_controller.dart';
 
 class DrawerWidget extends StatelessWidget {
   DrawerWidget({super.key});

@@ -26,7 +26,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "com.example.marginpoint"
+    namespace "com.example.babyparadise"
     compileSdk flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
@@ -45,7 +45,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.marginpoint"
+        applicationId "com.example.babyparadise"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion flutter.minSdkVersion
@@ -58,10 +58,10 @@ android {
 
     signingConfigs {
         release {
-            keyAlias 'marginpoint_release' // Replace with your key alias
-            keyPassword 'marginpoint123' // Replace with your key password
-            storeFile file('../../marginpoint.keystore') // Path to your keystore file
-            storePassword 'marginpoint123' // Replace with your keystore password
+            keyAlias 'babyparadise_release' // Replace with your key alias
+            keyPassword 'babyparadise123' // Replace with your key password
+            storeFile file('../../babyparadise.keystore') // Path to your keystore file
+            storePassword 'babyparadise123' // Replace with your keystore password
         }
     }
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:marginpoint/pages/admin/add_product_form.dart';
+import 'package:babyparadise/pages/admin/add_product_form.dart';
 
 class ProductPage extends StatelessWidget {
   const ProductPage({super.key});
@@ -47,36 +47,7 @@ class ProductPage extends StatelessWidget {
                 child: Center(
                   child: ListView(
                     children: const [
-                      // Placeholder for product list
-                      // Replace this with your actual product list
-                      ListTile(
-                        title: Text('Product 1'),
-                      ),
-                      ListTile(
-                        title: Text('Product 2'),
-                      ),
-                      ListTile(
-                        title: Text('Product 4'),
-                      ),
-                      ListTile(
-                        title: Text('Product 5'),
-                      ),
-                      ListTile(
-                        title: Text('Product 6'),
-                      ),
-                      ListTile(
-                        title: Text('Product 7'),
-                      ),
-                      ListTile(
-                        title: Text('Product 8'),
-                      ),
-                      ListTile(
-                        title: Text('Product 9'),
-                      ),
-                      ListTile(
-                        title: Text('Product 10'),
-                      ),
-                      // Add more list tiles as needed
+                      // TODO: Add product list here
                     ],
                   ),
                 ),

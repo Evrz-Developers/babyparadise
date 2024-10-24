@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:marginpoint/firebase_options.dart';
-import 'package:marginpoint/utils/firebase_utils.dart';
+import 'package:babyparadise/firebase_options.dart';
+import 'package:babyparadise/utils/firebase_utils.dart';
 import 'package:get/get.dart';
-import 'package:marginpoint/services/user_controller.dart';
+import 'package:babyparadise/services/user_controller.dart';
 
-import 'package:marginpoint/pages/shop_page.dart';
-import 'package:marginpoint/pages/cart_page.dart';
-import 'package:marginpoint/pages/intro_page.dart';
-import 'package:marginpoint/pages/admin_page.dart';
-import 'package:marginpoint/pages/staff_page.dart';
-import 'package:marginpoint/auth/login_screen.dart';
-import 'package:marginpoint/themes/light_mode.dart';
-import 'package:marginpoint/auth/signup_screen.dart';
-import 'package:marginpoint/pages/admin/product_page.dart';
-import 'package:marginpoint/pages/products/product_detail_page.dart';
+import 'package:babyparadise/pages/shop_page.dart';
+import 'package:babyparadise/pages/cart_page.dart';
+import 'package:babyparadise/pages/intro_page.dart';
+import 'package:babyparadise/pages/admin_page.dart';
+import 'package:babyparadise/pages/staff_page.dart';
+import 'package:babyparadise/auth/login_screen.dart';
+import 'package:babyparadise/themes/light_mode.dart';
+import 'package:babyparadise/auth/signup_screen.dart';
+import 'package:babyparadise/pages/admin/product_page.dart';
+import 'package:babyparadise/pages/products/product_detail_page.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-      name: 'marginpoint', options: DefaultFirebaseOptions.currentPlatform);
+      name: 'babyparadise', options: DefaultFirebaseOptions.currentPlatform);
   FirebaseAuth auth = FirebaseAuth.instance;
   User? currentUser = auth.currentUser;
   final UserController userController = Get.put(UserController());
@@ -32,8 +32,8 @@ Future main() async {
     userData = await getUserDetails();
     userController.setUserDetails(
         isLoggedIn: true,
-        id: userData?['userId'] ?? '',
-        role: userData?['role'] ?? '',
+        id: userData != null ? userData['userId'] ?? '' : '',
+        role: userData != null ? userData['role'] ?? '' : '',
         name: userData?['name'] ?? '',
         email: userData?['email'] ?? '');
   }
@@ -71,7 +71,7 @@ class App extends StatelessWidget {
 
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Margin-Point',
+        title: 'Baby Paradise',
         theme: lightMode,
         home: userData != null ? buildHomePage(userData!) : const LoginScreen(),
         routes: {
