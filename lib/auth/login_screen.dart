@@ -185,6 +185,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 showSpinner = false; // Hide loader
                               });
                             },
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
                           ),
                           
                         ),
@@ -235,8 +238,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           ], // Enable autofill for email
 
                           decoration: InputDecoration(
-                            border: const OutlineInputBorder(),
-                            focusedBorder: const OutlineInputBorder(),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16.0),
+                            ),
                             labelText: 'Email',
                             labelStyle: TextStyle(
                               color:
@@ -262,8 +269,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           controller: _passwordController,
                           obscureText: true,
                           decoration: InputDecoration(
-                            border: const OutlineInputBorder(),
-                            focusedBorder: const OutlineInputBorder(),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16.0),
+                            ),
                             labelText: 'Password',
                             labelStyle: TextStyle(
                               color:
@@ -307,6 +318,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               elevation: 10,
                               backgroundColor:
                                   Theme.of(context).colorScheme.primary,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16.0),
+                              ),
                             ),
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {

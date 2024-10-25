@@ -28,8 +28,12 @@ class CustomTextFormField extends StatelessWidget {
       keyboardType: keyboardType,
       obscureText: obscureText,
       decoration: InputDecoration(
-        border: const OutlineInputBorder(),
-        focusedBorder: const OutlineInputBorder(),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16.0),
+        ),
         labelText: labelText,
         labelStyle: TextStyle(
           color: Theme.of(context).colorScheme.inversePrimary,

@@ -227,6 +227,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ? "Please hold on..."
                                 : "Sign up with Google",
                             onPressed: _handleGoogleSignIn,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
                           ),
                         ),
                         const SizedBox(height: 20),
@@ -328,6 +331,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           child: 
                         ElevatedButton(
                             style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16.0),
+                                ),
                                 elevation: 10,
                                 backgroundColor:
                                     Theme.of(context).colorScheme.primary,
