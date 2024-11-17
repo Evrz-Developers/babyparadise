@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:babyparadise/components/custom_list_tile.dart';
 import 'package:babyparadise/components/drawer.dart';
-import 'package:babyparadise/pages/profile_page.dart';
+import 'package:babyparadise/screens/profile_screen.dart';
 import 'package:get/get.dart';
 import 'package:babyparadise/services/user_controller.dart';
 

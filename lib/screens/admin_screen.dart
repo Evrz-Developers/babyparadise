@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:babyparadise/components/custom_list_tile.dart';
 import 'package:babyparadise/components/drawer.dart';
-import 'package:babyparadise/pages/profile_page.dart';
+import 'package:babyparadise/screens/profile_screen.dart';
 
 class AdminPage extends StatefulWidget {
   const AdminPage({super.key});

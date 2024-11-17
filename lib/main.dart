@@ -6,16 +6,16 @@ import 'package:babyparadise/utils/firebase_utils.dart';
 import 'package:get/get.dart';
 import 'package:babyparadise/services/user_controller.dart';
 
-import 'package:babyparadise/pages/shop_page.dart';
-import 'package:babyparadise/pages/cart_page.dart';
-import 'package:babyparadise/pages/intro_page.dart';
-import 'package:babyparadise/pages/admin_page.dart';
-import 'package:babyparadise/pages/staff_page.dart';
+import 'package:babyparadise/screens/shop_screen.dart';
+import 'package:babyparadise/screens/cart_screen.dart';
+import 'package:babyparadise/screens/intro_screen.dart';
+import 'package:babyparadise/screens/admin_screen.dart';
+import 'package:babyparadise/screens/staff_screen.dart';
 import 'package:babyparadise/auth/login_screen.dart';
 import 'package:babyparadise/themes/light_mode.dart';
 import 'package:babyparadise/auth/signup_screen.dart';
-import 'package:babyparadise/pages/admin/product_page.dart';
-import 'package:babyparadise/pages/products/product_detail_page.dart';
+import 'package:babyparadise/screens/admin/product_screen.dart';
+import 'package:babyparadise/screens/products/product_detail_screen.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
